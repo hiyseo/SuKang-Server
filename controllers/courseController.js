@@ -10,7 +10,7 @@ exports.registerCourse = (req, res) => {
     const {course_name, course_location, credits, capacity, department_id, course_days, course_time, professor_email, course_content} = req.body;
     const professor_name = req.session.professor_name
 
-    if(userStatus !== 'Professor' || userStatus !== 'Auth'){
+    if(userStatus ==='Student'){
         return res.status(403).json({message: 'Access denied. Only professors can register courses.'})
     }
 
@@ -47,5 +47,31 @@ exports.registerCourse = (req, res) => {
         }
 
         res.status(201).json({message: 'Course registered successfully!'});
+    });
+};
+
+exports.enrollCourse = (req, res) => {
+    const userStatus = req.session.user && req.session.user.status
+    const student_id = req.session.user.user_id;
+    // console.log("student_id: ", student_id);
+    // console.log("userStatus: ", userStatus);
+
+    const {course_id} = req.body;
+
+    if(userStatus === 'Professor'){
+        return res.status(403).json({message: 'Access denied. Only Students can enroll courses.'})
+    }
+
+    courseModel.enrollInCourse(student_id, course_id, (err, result) => {
+        if(err){
+            console.error('Error enrolling in course: ', err);
+            return res.status(500).json({message: 'Server error'});
+        }
+
+        if(!result.success){
+            return res.status(400).json({message: result.message});
+        }
+
+        res.status(200).json({message: result.message});
     });
 };
