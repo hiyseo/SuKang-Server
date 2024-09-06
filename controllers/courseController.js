@@ -77,37 +77,3 @@ exports.enrollCourse = (req, res) => {
         res.status(200).json({message: result.message});
     });
 };
-
-exports.PGetMyCourses = (req, res) => {
-    const username = req.session.user.username;
-    const query = `
-    SELECT course_id, course_name
-    FROM Course
-    WHERE professor_username = ?
-    `;
-
-    db.query(query, [username], (err, results) => {
-        if(err){
-            console.error('Error fetching courses: ', err);
-            return res.status(500).json({message: 'Server error'});
-        }
-        res.json(results);
-    });
-};
-
-exports.SGetMyCourses = (req, res) => {
-    const user_id = req.session.user.user_id;
-    const query = `
-    SELECT course_id
-    FROM Enrollment
-    WHERE user_id = ?
-    `;
-
-    db.query(query, [user_id], (err, results) => {
-        if(err){
-            console.error('Error fetching courses: ', err);
-            return res.status(500).json({message: 'Server error'});
-        }
-        res.json(results);
-    });
-};
