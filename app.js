@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const userRoutes = require('./routes/userRoutes');
 const courseRoutes = require('./routes/courseRoutes');
-const postRoutes = require('./routes/postRoutes');
+const postRoutes = require('./routes/boardRoutes');
 
 const app = express();
 
@@ -20,9 +20,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// console.log(userRoutes);
 app.use('/users', userRoutes);
 app.use('/courses', courseRoutes);
-// app.use('/boards', postRoutes);
+app.use('/boards', postRoutes);
 
 module.exports = app;

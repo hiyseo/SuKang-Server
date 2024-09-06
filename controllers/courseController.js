@@ -9,6 +9,7 @@ exports.registerCourse = (req, res) => {
     const userStatus = req.session.user && req.session.user.status
     const {course_name, course_location, credits, capacity, department_id, course_days, course_time, professor_email, course_content} = req.body;
     const professor_name = req.session.professor_name
+    const professor_username = req.session.user.username
 
     if(userStatus ==='Student'){
         return res.status(403).json({message: 'Access denied. Only professors can register courses.'})
@@ -36,7 +37,8 @@ exports.registerCourse = (req, res) => {
         course_days,
         course_time,
         professor_email,
-        course_content
+        course_content,
+        professor_username
     };
 
     courseModel.createCourse(courseData, (err, results) => {
@@ -73,5 +75,39 @@ exports.enrollCourse = (req, res) => {
         }
 
         res.status(200).json({message: result.message});
+    });
+};
+
+exports.PGetMyCourses = (req, res) => {
+    const username = req.session.user.username;
+    const query = `
+    SELECT course_id, course_name
+    FROM Course
+    WHERE professor_username = ?
+    `;
+
+    db.query(query, [username], (err, results) => {
+        if(err){
+            console.error('Error fetching courses: ', err);
+            return res.status(500).json({message: 'Server error'});
+        }
+        res.json(results);
+    });
+};
+
+exports.SGetMyCourses = (req, res) => {
+    const user_id = req.session.user.user_id;
+    const query = `
+    SELECT course_id
+    FROM Enrollment
+    WHERE user_id = ?
+    `;
+
+    db.query(query, [user_id], (err, results) => {
+        if(err){
+            console.error('Error fetching courses: ', err);
+            return res.status(500).json({message: 'Server error'});
+        }
+        res.json(results);
     });
 };
