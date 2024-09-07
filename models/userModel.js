@@ -30,3 +30,13 @@ exports.findUserById = (userId, callback) => {
         callback(null, results[0]);
     });
 };
+
+exports.deleteUserById = (userId, callback) => {
+    const query = `DELETE FROM User WHERE user_id = ?`;
+    db.query(query, [userId], (err, results) => {
+        if(err){
+            return callback(err, null);
+        }
+        callback(null, results);
+    });
+};
