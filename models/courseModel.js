@@ -1,20 +1,5 @@
 const db = require('../config/db');
 
-exports.createCourse = (courseData, callback) => {
-    const {course_name, professor_name, professor_username, professor_email, course_location, credits, capacity, department_id,  course_days, course_time, course_content} = courseData;
-    const query = `
-    INSERT INTO Course (course_name, professor_name, professor_username, professor_email, course_location, credits, capacity, department_id, course_days, course_time, course_content)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    db.query(query, [course_name, professor_name, professor_username, professor_email, course_location, credits, capacity, department_id, course_days, course_time, course_content], (err, results) => {
-        if(err){
-            return callback(err);
-        }
-        callback(null, results);
-    });
-};
-
 //강의 신청
 exports.enrollInCourse = (student_id, course_id, callback) => {
     //강의시간 중복 체크
@@ -100,3 +85,33 @@ exports.enrollInCourse = (student_id, course_id, callback) => {
         });
     });
 };
+
+exports.createCourse = (courseData, callback) => {
+    const {course_name, professor_name, professor_username, professor_email, course_location, credits, capacity, department_id,  course_days, course_time, course_content} = courseData;
+    const query = `
+    INSERT INTO Course (course_name, professor_name, professor_username, professor_email, course_location, credits, capacity, department_id, course_days, course_time, course_content)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(query, [course_name, professor_name, professor_username, professor_email, course_location, credits, capacity, department_id, course_days, course_time, course_content], (err, results) => {
+        if(err){
+            return callback(err);
+        }
+        callback(null, results);
+    });
+};
+
+exports.getCoursesByDepartment = (department_id, callback) => {
+    const query =`
+    SELECT course_id, course_name, professor_name, course_location, credits, capacity, applicants, course_days, course_time
+    FROM Course
+    WHERE department_id = ?
+    `;
+
+    db.query(query, [department_id], (err, results) => {
+        if(err){
+            return callback(err);
+        }
+        callback(null, results);
+    })
+}
