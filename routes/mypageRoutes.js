@@ -3,28 +3,29 @@ const router = express.Router();
 const mypageController = require('../controllers/mypageController.js');
 
 //교수
+//내강의 조회(교수)
 router.get('/professor', mypageController.PGetMyCourses);
-// router.get('/professor/:course_id', mypageController.getCourseDetails);
+//강의 삭제(교수)
+router.delete('/professor', mypageController.deleteCourse);
+//내강의 상세보기(교수)
 router.get('/professor/course', mypageController.getCourseDetails);
-
-// router.get('/professor/:course_id/posts', mypageController.getCoursePosts);
+//강의게시물 조회(교수)
 router.get('/professor/posts', mypageController.getCoursePosts);
-
-// router.get('/professor/:course_id/students', mypageController.getEnrolledStudents);
+//강의게시물 삭제(교수)
+router.delete('/professor/posts', mypageController.deletePost);
+//강의수강생 조회(교수)
 router.get('/professor/students', mypageController.getEnrolledStudents);
-
-// router.delete('/professor/:course_id/students/:student_id', mypageController.removeStudentFromCourse);
+//강의수강생 삭제(교수)
 router.delete('/professor/students', mypageController.removeStudentFromCourse);
 
 //학생
+//내강의 조회(학생)
 router.get('/student', mypageController.SGetMyCourses);
-// router.get('/student/:course_id', mypageController.getCourseDetails);
+//내강의 상세보기(학생)
 router.get('/student/course', mypageController.getCourseDetails);
-
-// router.get('/student/:course_id/posts', mypageController.getCoursePosts);
+//강의게시물 조회(학생)
 router.get('/student/posts', mypageController.getCoursePosts);
-
-// router.delete('/student/:course_id', mypageController.cancelEnrollment);
+//강의수강 취소(학생)
 router.delete('/student', mypageController.cancelEnrollment);
 
 module.exports = router;

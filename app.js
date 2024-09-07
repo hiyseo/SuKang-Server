@@ -24,6 +24,6 @@ app.use(express.urlencoded({extended: true}));
 app.use('/users', userRoutes);
 app.use('/courses', courseRoutes);
 app.use('/boards', postRoutes);
-app.use('/mypage', mypageRoutes);
+app.use('/mypages', mypageRoutes);
 
 module.exports = app;
