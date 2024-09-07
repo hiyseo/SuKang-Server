@@ -61,21 +61,33 @@ exports.login = async (req, res) => {
         req.session.userId = user.user_id;
         req.session.professor_name = user.name
         req.session.user = user
-
+        
         console.log("session: ", req.session.professor_name)
-        res.status(200).json({message: `Welcome ${user.status === 'Student'?'학생':'교수'} ${user.name}, login successful!`});
+        console.log('세션 저장된 userId:', req.session.userId);
+        res.status(200).json({
+            message: `Welcome ${user.status === 'Student'?'학생':'교수'} ${user.name}, login successful!`,
+            userId: user.user_id,
+            status: user.status,
+            name: user.name
+        });
     });
 };
 
 exports.getProfile = (req, res) => {
-    const userId = req.session.userId;
+    console.log("세션 정보: ", req.session);
 
+    const userId = req.session.userId
+    if (!userId) {
+        console.log('세션에서 userId를 찾을 수 없습니다.');
+        return res.status(401).json({ message: 'User not authenticated' });
+    }
     userModel.findUserById(userId, (err, user) => {
+
         if(err){
             return res.status(500).json({error: 'Error retrieving user profile'});
         }
         if (!user){
-            return res.status(405).json({message: 'User not found'});
+            return res.status(404).json({message: 'User not found'});
         }
         res.status(200).json({
             username: user.username,

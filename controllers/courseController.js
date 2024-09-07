@@ -99,3 +99,14 @@ exports.enrollInCourse = (req, res) => {
         res.status(200).json({message: result.message});
     });
 };
+
+
+// 학과 목록 가져오기
+exports.getDepartments = (req, res) => {
+    courseModel.getDepartments((err, departments) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error fetching departments' });
+      }
+      res.status(200).json(departments);
+    });
+  };

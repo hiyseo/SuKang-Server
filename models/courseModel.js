@@ -113,5 +113,17 @@ exports.getCoursesByDepartment = (department_id, callback) => {
             return callback(err);
         }
         callback(null, results);
-    })
-}
+    });
+};
+
+// 학과 목록 가져오기
+exports.getDepartments = (callback) => {
+    const query = 'SELECT * FROM Department';
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Error fetching departments: ', err);
+        return callback(err, null);
+      }
+      callback(null, results);
+    });
+  };
