@@ -83,5 +83,26 @@ exports.getProfile = (req, res) => {
             student_id: user.student_id,
             status: user.status,
         })
-    })
+    });
+};
+
+exports.deleteAccount = (req, res) => {
+    const userId = req.session.userId;
+
+    if(!userId){
+        return res.status(400).json({message: 'User not logged in'});
+    }
+
+    userModel.deleteUserById(userId, (err, results) => {
+        if(err){
+            console.error('Error deleting user: ', err);
+            return res.status(500).json({message: 'Server error'});
+        }
+        req.session.destroy((err) => {
+            if(err){
+                return res.status(500).json({message: 'Failed to logout after acount deletion'});
+            }
+            res.status(200).json({message: 'Account deleted successfully!'})
+        });
+    });
 }
