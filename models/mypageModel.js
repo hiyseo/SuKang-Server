@@ -102,5 +102,25 @@ exports.cancelEnrollment = (course_id, student_id, callback) => {
             return callback(err);
         }
         callback(null, results);
-    })
-}
+    });
+};
+
+exports.deleteCourseById = (course_id, callback) => {
+    const query = `DELETE FROM Course WHERE course_id = ?`;
+    db.query(query, [course_id], (err, results) => {
+        if(err){
+            return callback(err, null);
+        }
+        callback(null, results);
+    });
+};
+
+exports.deletePostById = (post_id, callback) => {
+    const query = `DELETE FROM BoardPost WHERE post_id = ?`;
+    db.query(query, [post_id], (err, results) => {
+        if(err){
+            return callback(err, null);
+        }
+        callback(null, results)
+    });
+};

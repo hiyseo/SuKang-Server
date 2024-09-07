@@ -110,3 +110,35 @@ exports.cancelEnrollment = (req, res) => {
         res.status(200).json({message: 'Course enrollment canceled successfully!'});
     });
 };
+
+exports.deleteCourse = (req, res) => {
+    const course_id = req.query.course_id;
+
+    if(!course_id){
+        return res.status(400).json({message: 'Course ID is required'});
+    }
+
+    mypageModel.deleteCourseById(course_id, (err, result) => {
+        if(err){
+            console.error('Error deleting course: ', err);
+            return res.status(500).json({message: 'Server error'});
+        }
+        res.status(200).json({message: 'Course deleted successfully!'});
+    });
+};
+
+exports.deletePost = (req, res) => {
+    const post_id = req.query.post_id;
+
+    if(!post_id){
+        return res.status(400).json({message: 'Post ID is required'});
+    }
+
+    mypageModel.deletePostById(post_id, (err, result) => {
+        if(err){
+            console.error('Error deleting post: ', err);
+            return res.status(500).json({message: 'Server error'});
+        }
+        res.status(200).json({message: 'Post deleted successfully!'})
+    })
+}
