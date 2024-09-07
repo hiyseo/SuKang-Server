@@ -12,3 +12,21 @@ exports.createPost = (postData, callback) => {
         callback(null, results);
     });
 };
+
+exports.getBoardPostsByStudentId = (student_id, callback) => {
+    const query = `
+    SELECT b.post_id, b.title, b.content, b.created_time, c.course_name
+    FROM BoardPost b
+    JOIN Course c ON b.course_id = c.course_id
+    JOIN Enrollment e ON e.course_id = c.course_id
+    WHERE e.user_id = ?
+    ORDER BY b.created_time DESC
+    `;
+
+    db.query(query, [student_id], (err, results) => {
+        if(err){
+            return callback(err, null);
+        }
+        callback(null, results);
+    });
+};
