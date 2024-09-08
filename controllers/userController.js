@@ -68,7 +68,8 @@ exports.login = async (req, res) => {
             message: `Welcome ${user.status === 'Student'?'학생':'교수'} ${user.name}, login successful!`,
             userId: user.user_id,
             status: user.status,
-            name: user.name
+            name: user.name,
+            username: user.username
         });
     });
 };

@@ -30,3 +30,18 @@ exports.getBoardPostsByStudentId = (student_id, callback) => {
         callback(null, results);
     });
 };
+
+exports.getCoursesByProfessor = (professorUsername, callback) => {
+    const query = `
+        SELECT course_id, course_name 
+        FROM Course 
+        WHERE professor_username = ?
+    `;
+
+    db.query(query, [professorUsername], (err, results) => {
+        if (err) {
+            return callback(err, null);
+        }
+        callback(null, results);
+    });
+};

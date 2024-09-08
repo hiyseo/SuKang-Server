@@ -37,7 +37,6 @@ exports.registerCourse = (req, res) => {
         course_days,
         course_time,
         professor_email,
-        course_content,
         professor_username
     };
 
@@ -75,18 +74,18 @@ exports.getCoursesByDepartment = (req, res) => {
 
 exports.enrollInCourse = (req, res) => {
     const userStatus = req.session.user && req.session.user.status
-    const student_id = req.session.user.user_id;
-    const {course_id} = req.body;
+    // const student_id = req.session.user.user_id;
+    const {user_id, course_id} = req.body;
 
     if(userStatus === 'Professor'){
         return res.status(403).json({message: 'Access denied. Only Students can enroll courses.'})
     }
 
-    if(!course_id || !student_id){
+    if(!course_id || !user_id){
         return res.status(400).json({message: 'Course not identified.'});
     }
 
-    courseModel.enrollInCourse(student_id, course_id, (err, result) => {
+    courseModel.enrollInCourse(user_id, course_id, (err, result) => {
         if(err){
             console.error('Error enrolling in course: ', err);
             return res.status(500).json({message: 'Server error'});

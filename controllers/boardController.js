@@ -33,7 +33,7 @@ exports.getStudentBoardPosts = (req, res) => {
     const student_id = req.session.user.user_id;
 
     if(!student_id){
-        return res.statsu(400).json({message: 'User not logged in'});
+        return res.status(400).json({message: 'User not logged in'});
     }
 
     boardModel.getBoardPostsByStudentId(student_id, (err, posts) => {
@@ -42,5 +42,27 @@ exports.getStudentBoardPosts = (req, res) => {
             return res.status(500).json({message: 'Server error'});
         }
         res.json(posts);
+    });
+};
+
+exports.getCoursesByProfessor = (req, res) => {
+    const professorUsername = req.session.user.username;
+
+    if (!professorUsername) {
+        return res.status(400).json({ message: 'Professor username is required' });
+    }
+
+    // 모델에서 교수가 개설한 강의 목록을 가져옴
+    boardModel.getCoursesByProfessor(professorUsername, (err, results) => {
+        if (err) {
+            console.error('Error fetching courses: ', err);
+            return res.status(500).json({ message: 'Server error' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'No courses found' });
+        }
+
+        res.status(200).json(results);
     });
 };
