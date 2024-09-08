@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 exports.getProfessorCourses = (username, callback) => {
     const query = `
-    SELECT course_id, course_name
+    SELECT course_id, course_name, course_location, course_days, course_time
     FROM Course
     WHERE professor_username = ?
     `;
@@ -17,7 +17,7 @@ exports.getProfessorCourses = (username, callback) => {
 
 exports.getStudentCourses = (user_id, callback) => {
     const query = `
-    SELECT course_id, course_name, professor_name, course_location, course_days, course_time
+    SELECT course_id, course_name, professor_name, course_location, course_days, course_time, professor_email
     FROM Enrollment NATURAL JOIN Course
     WHERE user_id = ?
     `;
@@ -63,7 +63,7 @@ exports.removeStudentFromCourse = (course_id, student_id, callback) => {
 
 exports.getCourseDetails = (course_id, callback) => {
     const query = `
-    SELECT c.course_name, c.course_location, c.credits, c.course_days, c.course_time
+    SELECT c.course_name, c.course_location, c.credits, c.course_days, c.course_time, c.professor_email
     FROM Course c
     WHERE c.course_id = ?
     `;

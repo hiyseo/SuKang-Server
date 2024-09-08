@@ -96,14 +96,16 @@ exports.getCoursePosts = (req, res) => {
 
 exports.cancelEnrollment = (req, res) => {
     const course_id = req.query.course_id;
-    const user_id = req.session.user.user_id;
+    const user_id = req.query.user_id
+    console.log("course_id: ", course_id);
+    console.log("user_id: ", user_id);
     const userStatus = req.session.user.status;
 
     if(userStatus === 'Professor'){
         return res.status(403).json({message: 'Access denied.'})
     }
 
-    mypageModel.cancelEnrollment(course_id, user_id, (err, results) => {
+    mypageModel.cancelEnrollment(user_id, course_id, (err, results) => {
         if(err){
             console.error('Error canceling enrollment: ', err);
         }

@@ -26,6 +26,6 @@ router.get('/student/course', mypageController.getCourseDetails);
 //강의게시물 조회(학생)
 router.get('/student/posts', mypageController.getCoursePosts);
 //강의수강 취소(학생)
-router.delete('/student', mypageController.cancelEnrollment);
+router.delete('/student/course', mypageController.cancelEnrollment);
 
 module.exports = router;
